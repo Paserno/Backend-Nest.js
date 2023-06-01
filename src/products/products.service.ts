@@ -23,6 +23,18 @@ export class ProductsService {
 
     try {
 
+      // if (!createProductDto.slug) {
+      //   createProductDto.slug = createProductDto.title
+      //     .toLowerCase()
+      //     .replaceAll(' ', '_')
+      //     .replaceAll("'", '')
+      // } else {
+      //   createProductDto.slug = createProductDto.slug
+      //   .toLowerCase()
+      //   .replaceAll(' ', '_')
+      //   .replaceAll("'", '')
+      // }
+
       const product = this.productRepository.create(createProductDto);
       await this.productRepository.save(product);
 
@@ -54,9 +66,9 @@ export class ProductsService {
 
 
   private handleDBExceptions(error: any) {
-    if (error.code === '23505') 
+    if (error.code === '23505')
       throw new BadRequestException(error.detail);
-    
+
 
     this.logger.error(error);
     // console.log(error);
