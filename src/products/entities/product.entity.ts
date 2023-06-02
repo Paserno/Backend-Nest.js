@@ -43,7 +43,12 @@ export class Product {
     @Column('text')
     gender: string;
 
-    //tags
+    @Column('text', {
+        array: true,
+        default: [],
+    })
+    tags: string[];
+
     //iamges
 
 
@@ -59,7 +64,13 @@ export class Product {
             .replaceAll("'", '')
     }
 
-    // @BeforeUpdate()
+    @BeforeUpdate()
+    checkSlugUpdate() {
+        this.slug = this.slug
+            .toLowerCase()
+            .replaceAll(' ', '_')
+            .replaceAll("'", '')
+    }
 
 }
 
