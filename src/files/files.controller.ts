@@ -4,13 +4,17 @@ import { FilesService } from './files.service';
 import { diskStorage } from 'multer';
 import { fileNamer, fileFilter } from './helpers';
 import { Response } from 'express';
+import { ConfigService } from '@nestjs/config';
 
 
 @Controller('files')
 export class FilesController {
-  constructor(private readonly filesService: FilesService) { }
+  constructor(
+    private readonly filesService: FilesService,
+    private readonly configService: ConfigService
+  ) { }
 
-  
+
   @Get('product/:imageName')
   findProductImage(
     @Res() res: Response, // respuesta manualmente
@@ -20,7 +24,7 @@ export class FilesController {
     console.log(imageName);
     const path = this.filesService.getStaticProductImage(imageName);
 
-    res.sendFile( path );
+    res.sendFile(path);
   }
 
   @Post('product')
@@ -40,11 +44,10 @@ export class FilesController {
       throw new BadRequestException('Make sure that the file is an images')
     }
 
-    const secureUrl = `${file.filename}`
+    // const secureUrl = `${file.filename}`
+    const secureUrl = `${this.configService.get('HOST_API')}/files/product/${ file.filename }`
 
-    return {
-      secureUrl,
-    };
+    return { secureUrl };
   }
 
 }
