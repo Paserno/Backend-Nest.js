@@ -62,7 +62,7 @@ export class AuthService {
 
      if ( !bcrypt.compareSync( password, user.password ) ) {
       throw new UnauthorizedException('Credentials are not valid (password)');
-     }
+     } 
 
 
     return {
