@@ -66,10 +66,20 @@ export class AuthService {
 
 
     return {
-      ...user,
+      // ...user,
+      id: user.id,
+      email: user.email,
       token: this.getJwtToken({ id: user.id })
     };
 
+  }
+
+  async checkAuthStatus (user: User) {
+    //! En el caso de no necesitar todos los datos, realizar desestructuracion.
+    return {
+      ...user,
+      token: this.getJwtToken({ id: user.id })
+    };
   }
 
   private getJwtToken( payload: JwtPayload) {
