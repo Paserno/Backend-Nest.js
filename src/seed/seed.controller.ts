@@ -1,5 +1,5 @@
 import { Controller, Get} from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger'
+import { ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { ValidRoles } from 'src/auth/interfaces';
 import { Auth } from 'src/auth/decorators';
@@ -15,6 +15,7 @@ export class SeedController {
 
   @Get()
   // @Auth( ValidRoles.admin )
+  @ApiResponse({ status: 200, description: 'Run Seed'})
   executeSeed() {
     return this.seedService.runSeed();
 

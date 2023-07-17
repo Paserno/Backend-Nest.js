@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -21,6 +21,7 @@ export class ProductsController {
   @ApiResponse({ status: 201, description: 'Product was created', type: Product})
   @ApiResponse({ status: 400, description: 'Bad request'})
   @ApiResponse({ status: 403, description: 'Forbidden. Token related'})
+  @ApiBearerAuth('JWT-auth')
   create(
     @Body() createProductDto: CreateProductDto,
     @GetUser() user: User,
@@ -40,6 +41,10 @@ export class ProductsController {
 
   @Patch(':id')
   @Auth( ValidRoles.admin )
+  @ApiResponse({ status: 200, description: 'Product was updated'})
+  @ApiResponse({ status: 401, description: 'Unauthorized. no token in request'})
+  @ApiResponse({ status: 403, description: 'Forbidden. Token related'})
+  @ApiBearerAuth('JWT-auth')
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProductDto: UpdateProductDto,
@@ -49,7 +54,11 @@ export class ProductsController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('JWT-auth')
   @Auth( ValidRoles.admin )
+  @ApiResponse({ status: 200, description: 'Product was deleted'})
+  @ApiResponse({ status: 401, description: 'Unauthorized. no token in request'})
+  @ApiResponse({ status: 403, description: 'Forbidden. Token related'})
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.productsService.remove(id);
   }

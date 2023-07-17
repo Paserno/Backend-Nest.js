@@ -102,7 +102,10 @@ export class Product {
     tags: string[];
 
     //iamges
-    @ApiProperty() 
+    @ApiProperty({
+        example: ['1741441-00-A_0_2000.jpg', '1741441-00-A_1.jpg'],
+        description: 'Product images',
+    }) 
     @OneToMany(
         () => ProductImage,
         (productImage) => productImage.product,
